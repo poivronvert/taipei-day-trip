@@ -4,7 +4,7 @@ import re
 from sqlmodel import Session
 
 from database import engine
-from models import Attraction, Image
+from models import AttractionBase as Attraction, Image
 
 def add_attraction(name,category,description,address,transport,mrt,lat,lng,images):
     with Session(engine) as session:
@@ -54,8 +54,5 @@ def add_attraction_from_json(json_file):
                 images
             )
 
-def paginate(data,page_size):
-    for ind in range(0,len(data),page_size):
-        yield data[ind:ind+page_size]
 
 

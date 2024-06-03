@@ -38,6 +38,6 @@ async def thankyou(request: Request):
 
 if __name__== "__main__":
 	try:
-		uvicorn.run("main:app", reload=True)
+		uvicorn.run("main:app", reload=True, host="0.0.0.0")
 	except Exception as e:
 		sys.exit(1)

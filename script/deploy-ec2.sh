@@ -1,9 +1,12 @@
 #!/bin/bash
 
-sudo apt update
+sudo apt update -y
 sudo apt upgrade -y
 
-sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
+sudo apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
+
+# 安裝 Python 3.11
+echo "安裝 Python 3.11..."
 
 wget https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
 tar xzvf Python-3.11.9.tgz
@@ -14,31 +17,25 @@ make -j$(nproc)
 sudo make altinstall
 
 cd ..
-rm -r Python-3.11.9
+rm -rf Python-3.11.9
 rm Python-3.11.9.tgz
+# 確認安裝成功
+echo "確認 Python 版本..."
+python3.11 --version
+echo "Python 3.11 安裝完成"
 
-echo "Successfully installed Python3.11.9"
+# wget https://bootstrap.pypa.io/get-pip.py
+# python3.11 ./get-pip-py
+# echo "Successfully installed pip"
 
-wget https://pip.pypa.io/en/stable/installation/#get-pip-py
-python get-pip-py
 
-cd .. 
-rm get-pip.py
+sudo apt update && sudo apt install mysql-server
+# sudo service mysql start
+sudo service mysql status
 
-echo "Successfully installed pip"
 
-requirements=(
-	python-dotenv==1.0.1
-	SQLAlchemy==2.0.30
-	fastapi==0.111.0
-	pydantic==2.7.1
-	uvicorn==0.30.0
-)
+pip3.11 install -r ../requirements.txt
 
-for i in {$requirements[@]};
-	sudo pip install $i;
-	echo "Successfully installed $i"
-
-python init_db.py
+python3.11 ../app/init_table.py
 
 
