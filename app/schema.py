@@ -13,7 +13,7 @@ class Attraction(BaseModel):
     images: list[str]
 
 class AttractionOut(BaseModel):
-    nextPage:int
+    nextPage:int | None
     data: list[Attraction]
 
 class AttractionIdOut(BaseModel):

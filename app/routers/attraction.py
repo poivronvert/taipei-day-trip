@@ -3,6 +3,7 @@ from fastapi import APIRouter, Query, Path, Request, Response, HTTPException, st
 from fastapi.responses import JSONResponse
 from sqlmodel import Session, select, col, or_
 from sqlalchemy.orm import joinedload
+from sqlalchemy import func
 from models import AttractionBase, Image
 import schema
 from database import engine
@@ -29,6 +30,7 @@ async def get_attraction(
         description="用來完全比對捷運站名稱、或模糊比對景點名稱的關鍵字，沒有給定則不做篩選",
     ),
 ) -> schema.AttractionOut | AttractionInternalErrorSchema | Error:
+    page_size: int = 12
     with Session(engine) as session:
         query = select(AttractionBase).options(
             joinedload(AttractionBase.images).load_only(Image.url)
@@ -39,7 +41,9 @@ async def get_attraction(
                     AttractionBase.mrt == keyword, AttractionBase.name.contains(keyword)
                 )
             )
-        attractions = session.exec(query.offset(page * 12).limit(12)).unique().all()
+        cnt_stmt = select(func.count()).select_from(query.subquery())
+        cnt = session.exec(cnt_stmt).first()
+        attractions = session.exec(query.offset(page * page_size).limit(page_size)).unique().all()
         if not attractions:
             raise AttractionInternalError(message="沒有資料")
 
@@ -49,7 +53,11 @@ async def get_attraction(
             _attraction["images"] = [_.url for _ in a.images]
             res.append(_attraction)
 
-        return {"nextPage": page + 1, "data": res}
+        nextpage = page + 1
+        if (cnt - ((page+1) * page_size)) <=12:
+            nextpage = None # meaning that is last page. 
+
+        return {"nextPage": nextpage, "data": res}
 
 
 @attraction_router.get(

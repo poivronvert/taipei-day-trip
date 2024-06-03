@@ -36,10 +36,9 @@ def get_mrt():
             .order_by(func.count(AttractionBase.name).desc())
         )
         with Session(engine) as sess:
-            res = []
-            for row in sess.exec(stmt).all():
-                res.append({"mrt": row[0], "attraction_cnt": row[1]})
-            return res
+            mrt_list = sess.exec(stmt).all()
+            res = [row[0] for row in mrt_list]
+            return {"data":res}
     except Exception as e:
         WebBaseException(
             error=True,
