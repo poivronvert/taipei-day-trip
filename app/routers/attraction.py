@@ -54,7 +54,7 @@ async def get_attraction(
             res.append(_attraction)
 
         nextpage = page + 1
-        if (cnt - ((page+1) * page_size)) <=12:
+        if (cnt - (page * page_size)) <=12:
             nextpage = None # meaning that is last page. 
 
         return {"nextPage": nextpage, "data": res}
