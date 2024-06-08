@@ -147,6 +147,7 @@ function appendMrt(mrt){
     mrtDiv.className = 'mrt-item';
     mrtDiv.addEventListener('click', function() {
         inputMrt(this);
+        searchAttraction();
     });
 
     let container = document.querySelector('.mrt-list');
