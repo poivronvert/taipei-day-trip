@@ -394,7 +394,10 @@ body {
 .navbar {
   background-color: #ffffff;
   height: 34px;
+  width: 100%;
   padding: 10px 0;
+  position: fixed;
+  z-index: 1;
 }
 .navbar .navbar-list {
   display: flex;
@@ -475,7 +478,7 @@ body {
 }
 
 main {
-  padding-top: 414px;
+  padding: 40px 0;
   flex: 1;
 }
 

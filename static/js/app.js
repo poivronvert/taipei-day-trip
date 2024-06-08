@@ -2,26 +2,25 @@ let page = 0;
 let keyword = "";
 let isLoading = false;
 let initialLoadCompleted = false;
-let hasNextPage = true;
+let hasNextPage = false;
 let observer;
 
-document.addEventListener('DOMContentLoaded', function() {
-    if(!initialLoadCompleted){
-        getData(page, keyword);
+document.addEventListener('DOMContentLoaded', function () {
+    if (!initialLoadCompleted) {
+        hasNextPage = true;
+        loadData();
         initialLoadCompleted = true;
-
     }
-
     getMrt();
     observeLastElement();
 });
 
-let callback = function(entries, observer) {
+let callback = function(entries){
     entries.forEach(entry => {
         if (entry.isIntersecting && !isLoading && initialLoadCompleted && hasNextPage) {
             page++;
             isLoading = true;
-            getData(page, keyword);
+            loadData();
         }
     });
 };
@@ -34,58 +33,66 @@ function observeLastElement() {
     }
 }
 
-function getData(page, keyword){
+function loadData() {
+    if (!hasNextPage) return;
+
     const url = `/api/attractions?page=${page}&keyword=${keyword}`
     fetch(url)
-    .then(response => response.json())
-    .then(res => {
-        isLoading = false; 
-        if (res.hasOwnProperty('error')) {
-            let errorMessage = document.createElement('div');
-            errorMessage.textContent = res.message;
-            container.appendChild(errorMessage);
-            return;
-        }
+        .then(response => response.json())
+        .then(res => {
+            isLoading = false;
 
-        let results = res.data;
-        results.forEach(result => {
-            appendAttraction(result);
+            if (res.error) {
+                alert(res.message);
+                return;
+            }
+            
+            appendAttractions(res.data);
+
+            updateScrollTrigger(res.nextPage);
+            console.log('下一頁:',res.nextPage);
+
+        })
+        .catch(error => {
+            isLoading = false;
+            console.error('Error fetching item', error);
         });
+}
 
-
-        let oldTrigger = document.querySelector('.scroll-trigger');
-        if (oldTrigger){
-            oldTrigger.remove();
-        }
-
-        if (res.nextpage !== null) {
-            let newTrigger = document.createElement('div');
-            newTrigger.className='scroll-trigger';
-            let container = document.querySelector('.grid-attraction');
-            container.appendChild(newTrigger);
-
-  
-        } else {
-            hasNextPage = false;
-            observer.disconnect();
-        }
-
-        observeLastElement();
-    })
-    .catch(error => {
-        isLoading = false;
-        console.error('Error fetching item',error);
+function appendAttractions(attractions) {
+    attractions.forEach(attraction => {
+        appendAttraction(attraction);
     });
 }
 
-function appendAttraction(result){
+function updateScrollTrigger(nextPage) {
+    let oldTrigger = document.querySelector('.scroll-trigger');
+    if(oldTrigger){
+        oldTrigger.remove();
+    }
 
+    if (nextPage !== null){
+        let newTrigger = document.createElement('div');
+        newTrigger.className = 'scroll-trigger';
+        let container = document.querySelector('.grid-attraction');
+        container.appendChild(newTrigger);
+        hasNextPage = true;
+        observeLastElement();
+    } else {
+        hasNextPage = false;
+        if (observer) {
+            observer.disconnect();
+        }
+    }
+}
+
+function appendAttraction(result){
     let parentDiv = document.createElement('div');
     parentDiv.className = "attraction-group";
 
     let topDiv = document.createElement('div');
     topDiv.className = "attraction-top";
-    
+
     let attractionImg = document.createElement('img');
     attractionImg.src = result.images[0];
     attractionImg.className = "attraction-img";
@@ -113,39 +120,34 @@ function appendAttraction(result){
 
     let container = document.querySelector('.grid-attraction');
     container.appendChild(parentDiv);
-    
+
 }
 
 function getMrt() {
-    const url ='api/mrts';
+    const url = 'api/mrts';
     fetch(url)
-    .then(response => response.json())
-    .then(res => {
-        if (res.hasOwnProperty('error')) {
-            let errorMessage = document.createElement('div');
-            errorMessage.textContent = res.message;
-            let container = document.querySelector('.mrt-list');
-            container.appendChild(errorMessage);
-        }
-        let mrts = res.data;
-        for (let mrt of mrts){
-            if (mrt !== 'mrt-not-exist'){
-                appendMrt(mrt);
+        .then(response => response.json())
+        .then(res => {
+            if (!res.error) {
+                let mrts = res.data;
+                for (let mrt of mrts) {
+                    if (mrt !== 'mrt-not-exist') {
+                        appendMrt(mrt);
+                    }
+                }
             }
-
-        }
-    })
-    .catch(e => {
-        console.error(e);
-    });
+        })
+        .catch(e => {
+            console.error('getMrt Error:', e);
+        });
 }
 
 
-function appendMrt(mrt){
+function appendMrt(mrt) {
     let mrtDiv = document.createElement('div');
     mrtDiv.textContent = mrt;
     mrtDiv.className = 'mrt-item';
-    mrtDiv.addEventListener('click', function() {
+    mrtDiv.addEventListener('click', function () {
         inputMrt(this);
         searchAttraction();
     });
@@ -162,14 +164,15 @@ function searchAttraction() {
     }
     try {
         keyword = newKeyword;
-        page=0;
+        page = 0;
         let container = document.querySelector('.grid-attraction')
         container.innerHTML = '';
-        getData(page,keyword);
+        hasNextPage = true;
+        loadData();
         observeLastElement();
     }
-    catch(error){
-        console.error(error);
+    catch (error) {
+        console.error("searchAttraction Error: ", error);
     }
 }
 
@@ -181,9 +184,9 @@ function inputMrt(div) {
             keywordInput.value = "";
         }
         keywordInput.value = keyword;
-        
-    } catch(error){
-        console.error(error);
+
+    } catch (error) {
+        console.error("inputMrt Error", error);
     }
 }
 
@@ -193,14 +196,13 @@ function clearDefaultText(input) {
         input.value = "";
     }
 }
-observeLastElement();
 
-function rightShift(){
+function rightShift() {
     let selectDiv = document.getElementById('mrt-list');
-    selectDiv.scrollLeft +=60;
+    selectDiv.scrollLeft += 60;
 }
 
-function leftShift(){
+function leftShift() {
     let selectDiv = document.getElementById('mrt-list');
-    selectDiv.scrollLeft -=60;
+    selectDiv.scrollLeft -= 60;
 }
