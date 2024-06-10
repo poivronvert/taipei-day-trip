@@ -1,6 +1,8 @@
 import sys
 from fastapi import Depends, FastAPI, Request, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+
 import uvicorn
 
 from routers.user import user_router
@@ -21,6 +23,8 @@ app.include_router(order_router, prefix="/api", tags=["Order"])
 
 app.add_exception_handler(WebBaseException, general_exception_handler)
 
+app.mount('/static',StaticFiles(directory='static'),name='static')
+
 # Static Pages (Never Modify Code in this Block)
 @app.get("/", include_in_schema=False)
 async def index(request: Request):
@@ -38,6 +42,6 @@ async def thankyou(request: Request):
 
 if __name__== "__main__":
 	try:
-		uvicorn.run("main:app", reload=True, host="0.0.0.0")
+		uvicorn.run("main:app", reload=True, host="127.0.0.1")
 	except Exception as e:
 		sys.exit(1)

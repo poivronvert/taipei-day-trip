@@ -1,11 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
-  
+
+<body class="noto-sans-medium">
+  <nav class="navbar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="headline noto-sans-bold">台北一日遊</h2>
+        <ul class="navbar-list">
+          <li><a href="#" class="navlist-item">預定行程</a></li>
+          <li><a href="#" class="navlist-item">登入/註冊</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <section class="herosection">
+      <div class="headimage">
+        <img src="./static/assets/welcome-image.png" alt="welcome-image">
+      </div>
+      <div style="padding: 10px;gap:10px;">
+        <div class="container">
+          <div class="slogan noto-sans-bold">
+            <div>
+              <h1>輕鬆享受台北一日悠閒</h1>
+              <p>探索每個角落，體驗城市的深度旅遊行程</p>
+            </div>
+
+            <div class="search">
+              <input type="text" id="attraction-search" value="輸入景點名稱查詢" onclick="clearDefaultText(this)">
+              <button type="button" onclick="searchAttraction()">
+                <img src="./static/assets/search.png" alt="search">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  </div>
+
+  <main>
+
+    <nav class="mainbar">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <ul class="mainbar-list">
+            <li><a class="left-arrow" onclick="leftShift()"><img src="/static/assets/left-arrow.png"
+                  alt="left-arrow"></a></li>
+            <li id="mrt-list" class="mrt-list"></li>
+            <li><a class="right-arrow" onclick="rightShift()"><img src="/static/assets/right-arrow.png"
+                  alt="right-arrow"></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="mainattractions; z-index: 1;">
+      <div class="container">
+        <div class="grid-attraction">
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footerDiv d-flex">
+      <div>COPYRIGHT © 2021 台北一日遊</div>
+    </div>
+  </footer>
+
+  <script src="./static/js/app.js"></script>
 </body>
+
 </html>
