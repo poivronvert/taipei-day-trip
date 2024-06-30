@@ -93,6 +93,9 @@ function appendAttraction(result){
     let topDiv = document.createElement('div');
     topDiv.className = "attraction-top";
 
+    let attractionA = document.createElement('a');
+    attractionA.href= 'attraction/'+result.id;
+
     let attractionImg = document.createElement('img');
     attractionImg.src = result.images[0];
     attractionImg.className = "attraction-img";
@@ -103,7 +106,8 @@ function appendAttraction(result){
     attractionName.className = "attraction-name";
     topDiv.appendChild(attractionName);
 
-    parentDiv.appendChild(topDiv);
+    attractionA.appendChild(topDiv);
+    parentDiv.appendChild(attractionA);
 
     let attractionInfo = document.createElement('div');
     attractionInfo.className = "attraction-info";

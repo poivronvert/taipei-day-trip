@@ -48,10 +48,32 @@ $gradient-lightcyan: linear-gradient(#337788, $primary-cyan-50);
   line-height: 24px;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+.header3 {
+  font-family: "Noto Sans TC", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
+  height: 33px;
+}
+.description {
+  line-height: 23.17px;
+  margin-bottom: 30px;
+}
+
+.address {
+  margin-bottom: 20px;
+  line-height: 23.17px;
+}
+
+.transport {
+  line-height: 23.17px ;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 body {
@@ -111,6 +133,7 @@ body {
   }
 }
 
+// index
 .herosection {
   position: relative;
   height: 320px;
@@ -118,8 +141,7 @@ body {
   width: 100dvw;
 }
 
-.headimage { 
-
+.headimage {
   img {
     z-index: -1;
     position: absolute;
@@ -137,7 +159,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding:0px 10px;
+  padding: 0px 10px;
 
   h1 {
     height: 41px;
@@ -199,7 +221,6 @@ main {
     color: $secondary-gray-70;
   }
 
-
   .mrt-list {
     display: flex;
     overflow-x: hidden;
@@ -217,29 +238,25 @@ main {
     gap: 4px;
     cursor: pointer;
   }
-
 }
 
 .left-arrow {
-    &:hover,
-    &.active {
-      content: url("/static/assets/hovered-left.png");
-    }
+  &:hover {
+    content: url("/static/assets/hovered-left.png");
   }
+}
 
 .right-arrow {
-    &:hover,
-    &.active {
-      content: url("/static/assets/hovered-right.png");
-    }
+  &:hover {
+    content: url("/static/assets/hovered-right.png");
+  }
 }
 
-.left-arrow, .right-arrow {
-    background-color: $white;
-    cursor: pointer;
+.left-arrow,
+.right-arrow {
+  background-color: transparent;
+  cursor: pointer;
 }
-
-
 
 .grid-attraction {
   display: grid;
@@ -300,19 +317,214 @@ main {
 }
 
 .footerDiv {
-    width: 100%;
-    background-color: $secondary-gray-50;
-    color: $white;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  background-color: $secondary-gray-50;
+  color: $white;
+  justify-content: center;
+  align-items: center;
 
-    @include mobile {
+  @include mobile {
     height: 30px;
+  }
+
+  @include desktop {
+    height: 100px;
+  }
+}
+
+// attraction
+.hr-layout {
+  @include mobile {
+    border: none;
+  }
+  @include desktop {
+    border: 1px solid #e8e8e8;
+    width: 100%;
+  }
+}
+
+.attr-position {
+  @include mobile {
+    top: 54px;
+  }
+
+  @include desktop {
+    top: 74px;
+  }
+}
+.attr-container {
+  margin-right: auto;
+  margin-left: auto;
+
+  @include mobile {
+    width: 100%;
+  }
+
+  @include desktop {
+    max-width: 1200px;
+  }
+
+
+}
+
+.layout {
+  @include desktop {
+    display: flex;
+  }
+}
+
+.picture-container {
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  @include mobile {
+    height: 350px;
+  }
+
+  @include desktop {
+    width: 540px;
+    height: 400px;
+    overflow: hidden;
+  }
+
+  .attr-img {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+    
+    .imgCounter {
+      position: absolute;
+      width: 100%;
+      z-index: 1;
+      bottom: 12px;
+      gap: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .left-arrow,
+    .right-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      display: flex;
+      z-index: 1;
+    }
+    .left-arrow {
+      left: 10px;
     }
 
-    @include desktop {
-    height: 100px;
+    .right-arrow {
+      right: 10px;
     }
+
+    input[type="radio"] {
+      appearance: none;
+      border-radius: 50%;
+      background-color: #ffffff;
+      opacity: 75%;
+      width: 12px;
+      height: 12px;
+    }
+    input[type="radio"]:checked {
+      background-color: $black;
+      border: 1px $white solid;
+    }
+  }
+}
+
+.profile {
+  border-radius: 5px;
+  background-color: $white;
+  @include mobile {
+    padding: 10px;
+  }
+
+  @include desktop {
+    width: 600px;
+    padding: 0;
+    margin-left: 40px;
+  }
+  input[type="radio"] {
+    appearance: none;
+    border-radius: 50%;
+    background-color: $white;
+    width: 20px;
+    height: 20px;
+
+    &:checked {
+      background-color: $primary-cyan-70;
+      border: 2px solid $white;
+    }
+  }
+
+}
+.custom-input-date {
+  position: relative;
+  margin-bottom: 15px;
+}
+.custom-input-date input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #FFFFFF; 
+  width: 149px; 
+  height: 25px;
+  padding:5px 34px 5px 10px; 
+  color: black;
+}
+
+.custom-input-date input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+.custom-input-date .calendar-icon {
+  position: absolute;
+  left: 241px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: url('/static/assets/calendar.png') no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+
+.category-mrt {
+  margin-top: 15px;
+  margin-bottom: 20px;
+  height: 22px;
+}
+
+.booking-form {
+  background-color: $secondary-gray-20;
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 15px 20px;
+
+  @include mobile {
+    height: 300px;
+  }
+
+}
+
+.profile-btn {
+  color: $white;
+  background-color: $primary-cyan-70;
+  width: 154px;
+  height: 36px;
+  padding: 10px 20px;
+  border-radius: 5px;
 }
 
 // utilities
