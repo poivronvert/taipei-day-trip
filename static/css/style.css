@@ -353,11 +353,6 @@ p {
   font-weight: 500;
 }
 
-.slogan-title {
-  font-size: 28px;
-  line-height: 24px;
-}
-
 .headline {
   font-size: 30px;
   line-height: 34px;
@@ -389,19 +384,20 @@ p {
 
 .transport {
   line-height: 23.17px;
+  margin-bottom: 20px;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
 }
 
 body {
   color: #666666;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .container {
@@ -471,6 +467,7 @@ body {
   height: 41px;
   text-shadow: 0 0 30px #aabbcc;
   margin-bottom: 20px;
+  font-size: 28px;
 }
 .slogan p {
   margin: 0px;
@@ -485,6 +482,16 @@ body {
   height: 46px;
   width: 400px;
   box-shadow: 0 0 20px #aabbcc;
+}
+@media (min-width: 360px) {
+  .search {
+    width: 285px;
+  }
+}
+@media (min-width: 1280px) {
+  .search {
+    width: 400px;
+  }
 }
 .search input {
   color: #757575;
@@ -615,21 +622,11 @@ main {
 }
 
 .footerDiv {
-  width: 100%;
   background-color: #757575;
   color: #ffffff;
   justify-content: center;
   align-items: center;
-}
-@media (min-width: 360px) {
-  .footerDiv {
-    height: 30px;
-  }
-}
-@media (min-width: 1280px) {
-  .footerDiv {
-    height: 100px;
-  }
+  height: 100px;
 }
 
 @media (min-width: 360px) {
@@ -646,12 +643,12 @@ main {
 
 @media (min-width: 360px) {
   .attr-position {
-    top: 54px;
+    top: 14px;
   }
 }
 @media (min-width: 1280px) {
   .attr-position {
-    top: 74px;
+    top: 34px;
   }
 }
 
@@ -680,6 +677,7 @@ main {
   position: relative;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
 }
 @media (min-width: 360px) {
   .picture-container {
@@ -833,6 +831,7 @@ main {
   height: 36px;
   padding: 10px 20px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .d-flex {

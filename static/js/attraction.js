@@ -9,11 +9,32 @@ document.addEventListener('DOMContentLoaded', function(){
                 return;
             }
             appendInfo(res.data);
+
+            const morningRadio = document.getElementById('morning');
+            const afternoonRadio = document.getElementById('afternoon');
+
+
+            morningRadio.addEventListener('change', updatePrice);
+            afternoonRadio.addEventListener('change', updatePrice);
+
+            updatePrice();
+
+            function updatePrice() {
+                if(morningRadio.checked) {
+                    priceResult = 2000;
+                } else if (afternoonRadio.checked) {
+                    priceResult = 2500;
+                }
+            document.getElementById('amount').textContent = '新台幣 '+priceResult+' 元';
+            }
         })
         .catch(error => {
             console.error('Error fetching item', error);
         });
+    
 });
+
+
 
 function appendInfo(result) {
     const imgCounter = document.getElementById('imgCounter');
@@ -66,7 +87,7 @@ class ImageCarousel {
 
         img.src=this.images[this.i];
 
-        const radios = document.getElementsByTagName('input');
+        const radios = document.getElementsByName('imgCounter');
         for (let j=0;j<radios.length;j++){
             radios[j].checked = (j === this.i);
         }
@@ -86,4 +107,5 @@ function triggerDatePicker() {
     const dateInput = document.getElementById('appt');
     dateInput.showPicker ? dateInput.showPicker() : dateInput.click();
   }
+
 

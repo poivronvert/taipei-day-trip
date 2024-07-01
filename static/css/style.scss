@@ -32,10 +32,6 @@ $gradient-lightcyan: linear-gradient(#337788, $primary-cyan-50);
   font-weight: 500;
 }
 
-.slogan-title {
-  font-size: 28px;
-  line-height: 24px;
-}
 
 .headline {
   font-size: 30px;
@@ -67,19 +63,20 @@ $gradient-lightcyan: linear-gradient(#337788, $primary-cyan-50);
 
 .transport {
   line-height: 23.17px ;
+  margin-bottom: 20px;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
 }
 
 body {
   color: $secondary-gray-70;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 // screen size
@@ -165,6 +162,7 @@ body {
     height: 41px;
     text-shadow: 0 0 30px #aabbcc;
     margin-bottom: 20px;
+    font-size: 28px;
   }
   p {
     margin: 0px;
@@ -180,6 +178,14 @@ body {
   height: 46px;
   width: 400px;
   box-shadow: 0 0 20px $bluegray;
+
+  @include mobile {
+    width: 285px;
+  }
+
+  @include desktop {
+    width:400px;
+  }
 
   input {
     color: $secondary-gray-50;
@@ -317,19 +323,11 @@ main {
 }
 
 .footerDiv {
-  width: 100%;
   background-color: $secondary-gray-50;
   color: $white;
   justify-content: center;
   align-items: center;
-
-  @include mobile {
-    height: 30px;
-  }
-
-  @include desktop {
-    height: 100px;
-  }
+  height: 100px;
 }
 
 // attraction
@@ -345,11 +343,11 @@ main {
 
 .attr-position {
   @include mobile {
-    top: 54px;
+    top: 14px;
   }
 
   @include desktop {
-    top: 74px;
+    top: 34px;
   }
 }
 .attr-container {
@@ -377,6 +375,9 @@ main {
   position: relative;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
+
+
   @include mobile {
     height: 350px;
   }
@@ -392,6 +393,8 @@ main {
     width: 100%;
     position: relative;
     margin: 0 auto;
+
+
 
     img {
       height: 100%;
@@ -525,6 +528,7 @@ main {
   height: 36px;
   padding: 10px 20px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 // utilities
