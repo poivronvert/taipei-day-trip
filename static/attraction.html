@@ -1,11 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Attraction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
+
+<body class="noto-sans-medium">
+
+  <nav class="navbar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="/" style="text-decoration: none;">
+          <h2 class="headline noto-sans-bold">台北一日遊</h2>
+        </a>
+        <ul class="navbar-list">
+          <li><a href="#" class="navlist-item">預定行程</a></li>
+          <li><a href="#" class="navlist-item">登入/註冊</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hr-layout">
+  </nav>
+  <main>
+    <div class="p-relative attr-position">
+      <section>
+        <div class="attr-container">
+          <div class="layout">
+            <div class="picture-container">
+              <div class="attr-img" id="imgId">
+                <div class="left-arrow" id="preBtnId"><img src="/static/assets/left-arrow.png" alt="left-arrow"></div>
+                <div class="right-arrow" id="nextBtnId"><img src="/static/assets/right-arrow.png" alt="right-arrow"></div>
+                <div class="imgCounter" id="imgCounter"></div>
+              </div>
+            </div>
   
+            <div class="profile">
+              <div class="name"></div>
+              <div class="category-mrt"></div>
+              <div class="booking-form">
+                <form>
+                  <p class="noto-sans-bold" style="margin-bottom: 15px; height: 22px;">訂購導覽行程</p>
+                  <p style="margin-bottom: 15px; line-height: 23.17px;">以此景點為中心的一日行程，帶您探索城市角落故事</p>
+                  <div class="d-flex custom-input-date">
+                    <label style="height: 35px; padding: 9px 0; box-sizing: border-box;" for="appt">選擇日期：</label>
+                    <input type="date" id="appt" name="appt" required />
+                    <div class="calendar-icon" onclick="triggerDatePicker()"></div>
+                  </div>
+                  <div class="d-flex" style="margin-bottom: 15px; height: 22px;">
+                    <p style="margin-right: 5px;">選擇時間：</p>
+                    <div class="d-flex">
+                      <div>
+                        <input type="radio" id="morning" name="timing" value="morning" checked="checked">
+                        <label style="vertical-align: top; margin-right: 10px;" for="morning">上半天</label>
+                      </div>
+    
+                      <div>
+                        <input type="radio" id="afternoon" name="timing" value="afternoon">
+                        <label style="vertical-align: top;" for="afternoon">下半天</label>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="d-flex" style="margin-bottom: 25px; height: 22px;">
+                    <p>導覽費用：</p>
+                    <p id="amount"></p>
+                  </div>
+                </form>
+                <button type="button" class="profile-btn noto-sans-regular">開始預約行程</button>
+              </div>
+            </div>
+          </div>
+  
+          <hr style="border: 1px solid #E8E8E8; width: 100%; margin: 40px 0;">
+        </div>
+      </section>
+  
+  
+  
+      <section class="noto-sans-regular">
+        <div class="container">
+          <div style=" padding: 10px 10px;">
+            <p class="description"></p>
+            <p>
+            <div class="noto-sans-bold" style="line-height: 13.3px; height: 32px;">景觀地點：</div>
+            <div class="address"></div>
+            </p>
+            <p>
+            <div class="noto-sans-bold" style="line-height: 13.3px; height: 32px;">交通方式：</div>
+            <div class="transport"></div>
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footerDiv d-flex">
+    <div>COPYRIGHT © 2021 台北一日遊</div>
+  </footer>
+
+
+  <script src="/static/js/attraction.js"></script>
 </body>
+
+
 </html>
