@@ -10,42 +10,46 @@
 </head>
 
 <body class="noto-sans-medium">
-  <nav class="navbar">
-    <div class="container">
-      <div class="d-flex justify-content-between align-items-center">
-        <a href="/" style="text-decoration: none;"><h2 class="headline noto-sans-bold">台北一日遊</h2></a>
-        <ul class="navbar-list">
-          <li><a href="#" class="navlist-item">預定行程</a></li>
-          <li><a href="#" class="navlist-item">登入/註冊</a></li>
-        </ul>
+  <div class="content">
+    <nav class="navbar">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <a href="/" style="text-decoration: none;">
+            <h2 class="headline noto-sans-bold">台北一日遊</h2>
+          </a>
+          <ul class="navbar-list">
+            <li><a href="#" class="navlist-item" id="navbarBooking">預定行程</a></li>
+            <li><a href="#" class="navlist-item" id="navbarSignin">登入/註冊</a></li>
+            <li><a href="#" class="navlist-item" id="navbarSignout" style="display: none;">登出系統</a></li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <header>
-    <section class="herosection">
-      <div class="headimage">
-        <img src="./static/assets/welcome-image.png" alt="welcome-image">
-      </div>
-      <div style="padding: 10px;gap:10px;">
-        <div class="container">
-          <div class="slogan noto-sans-bold">
-            <div>
-              <h1>輕鬆享受台北一日悠閒</h1>
-              <p>探索每個角落，體驗城市的深度旅遊行程</p>
-            </div>
+    <header>
+      <section class="herosection">
+        <div class="headimage">
+          <img src="./static/assets/welcome-image.png" alt="welcome-image">
+        </div>
+        <div style="padding: 10px;gap:10px;">
+          <div class="container">
+            <div class="slogan noto-sans-bold">
+              <div>
+                <h1>輕鬆享受台北一日悠閒</h1>
+                <p>探索每個角落，體驗城市的深度旅遊行程</p>
+              </div>
 
-            <div class="search">
-              <input type="text" id="attraction-search" value="輸入景點名稱查詢" onclick="clearDefaultText(this)">
-              <button type="button" onclick="searchAttraction()">
-                <img src="./static/assets/search.png" alt="search">
-              </button>
+              <div class="search">
+                <input type="text" id="attraction-search" value="輸入景點名稱查詢" onclick="clearDefaultText(this)">
+                <button type="button" onclick="searchAttraction()">
+                  <img src="./static/assets/search.png" alt="search">
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </header>
+      </section>
+    </header>
 
   </div>
 
@@ -73,6 +77,44 @@
     </div>
 
   </main>
+  </div>
+
+  <div id="signinModal" class="modal">
+    <div class="bar-decoration"></div>
+    <div class="modal-content">
+      <div style="padding:15px">
+          <span id="signincloseBtn" class="closeBtn"><img src="/static/assets/close.png"></span>
+          <div class="header3" style="text-align: center; height: 27px;">登入會員帳號</div>
+          <form id="signinForm">
+            <input type="email" id="signinEmail" placeholder="輸入電子信箱">
+            <input type="password" id="signinPassword" placeholder="輸入密碼">
+            <button type="submit" class="noto-sans-regular">登入帳戶</button>
+          </form>
+          <div id="msgSignin"></div>
+          <div id="switchSignup" style="text-align: center; height: 22px; margin: 5px 0;"><a href='#'>還沒有帳戶？點此註冊</a></div>
+        </div>
+      </div>
+  </div>
+
+  <div id="signupModal" class="modal">
+    <div class="bar-decoration"></div>
+    <div class="modal-content">
+      <div style="padding:25px 15px;position: relative;">
+        <span id="signupCloseBtn" class="closeBtn"><img src="/static/assets/close.png"></span>
+        <div class="header3" style="text-align: center; height: 27px;">註冊會員帳號</div>
+        <form id="signupForm">
+          <input type="text" id="signupName" placeholder="輸入姓名">
+          <input type="email" id="signupEmail" placeholder="輸入電子信箱">
+          <input type="password" id="signupPassword" placeholder="輸入密碼">
+          <button type="submit"class="noto-sans-regular">註冊新帳戶</button>
+        </form>
+        <div id="msgSignup"></div>
+        <div id="switchSignin" style="text-align: center; height: 22px; margin: 5px 0;"><a href='#'>已經有帳戶了？點此登入</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="overlay"></div>
 
   <footer class="footer">
     <div class="footerDiv d-flex">
@@ -81,6 +123,7 @@
   </footer>
 
   <script src="./static/js/app.js"></script>
+  <script src="/static/js/user.js"></script>
 </body>
 
 </html>

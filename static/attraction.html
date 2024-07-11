@@ -12,7 +12,8 @@
 </head>
 
 <body class="noto-sans-medium">
-
+  <div id="contnent">
+    
   <nav class="navbar">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center">
@@ -20,8 +21,9 @@
           <h2 class="headline noto-sans-bold">台北一日遊</h2>
         </a>
         <ul class="navbar-list">
-          <li><a href="#" class="navlist-item">預定行程</a></li>
-          <li><a href="#" class="navlist-item">登入/註冊</a></li>
+          <li><a href="#" class="navlist-item" id="navbarBooking">預定行程</a></li>
+          <li><a href="#" class="navlist-item" id="navbarSignin">登入/註冊</a></li>
+          <li><a href="#" class="navlist-item" id="navbarSignout" style="display: none;">登出系統</a></li>
         </ul>
       </div>
     </div>
@@ -72,7 +74,7 @@
                     <p id="amount"></p>
                   </div>
                 </form>
-                <button type="button" class="profile-btn noto-sans-regular">開始預約行程</button>
+                <button type="button" class="profile-btn noto-sans-regular" id="profileBooking">開始預約行程</button>
               </div>
             </div>
           </div>
@@ -100,13 +102,63 @@
       </section>
     </div>
   </main>
+  </div>
+
+  <div id="signinModal" class="modal">
+    <div class="bar-decoration"></div>
+    <div class="modal-content">
+      <div style="padding:25px 15px">
+          <span id="signincloseBtn" class="closeBtn"><img src="/static/assets/close.png"></span>
+          <div class="header3" style="text-align: center; height: 27px;">登入會員帳號</div>
+          <form id="signinForm">
+            <input type="email" id="signinEmail" placeholder="輸入電子信箱">
+            <input type="password" id="signinPassword" placeholder="輸入密碼">
+            <button type="submit" class="noto-sans-regular">登入帳戶</button>
+          </form>
+          <div id="msgSignin"></div>
+          <div id="switchSignup" style="text-align: center; height: 22px; margin: 5px 0;"><a href='#'>還沒有帳戶？點此註冊</a></div>
+        </div>
+      </div>
+  </div>
+
+  <div id="signupModal" class="modal">
+    <div class="bar-decoration"></div>
+    <div class="modal-content">
+      <div style="padding:25px 15px;">
+        <span id="signupCloseBtn" class="closeBtn"><img src="/static/assets/close.png"></span>
+        <div class="header3" style="text-align: center; height: 27px;">註冊會員帳號</div>
+        <form id="signupForm">
+          <input type="text" id="signupName" placeholder="輸入姓名">
+          <input type="email" id="signupEmail" placeholder="輸入電子信箱">
+          <input type="password" id="signupPassword" placeholder="輸入密碼">
+          <button type="submit"class="noto-sans-regular">註冊新帳戶</button>
+        </form>
+        <div id="msgSignup"></div>
+        <div id="switchSignin" style="text-align: center; height: 22px; margin: 5px 0;"><a href='#'>已經有帳戶了？點此登入</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="overlay"></div>
 
   <footer class="footerDiv d-flex">
     <div>COPYRIGHT © 2021 台北一日遊</div>
   </footer>
 
 
+
   <script src="/static/js/attraction.js"></script>
+  <script src="/static/js/user.js"></script>
+  <script>
+    const profileBooking = document.querySelector('#profileBooking')
+
+    profileBooking.addEventListener('click', async () => {
+    const isValidToken = await verifyUserToken();
+    if (!isValidToken) {
+      displaySigninModal();
+    }
+    })
+  </script>
 </body>
 
 

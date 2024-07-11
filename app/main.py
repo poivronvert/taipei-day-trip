@@ -13,6 +13,7 @@ from routers.order import order_router
 from exceptions import *
 
 
+
 app=FastAPI()
 
 app.include_router(user_router, prefix="/api", tags=["User"])
@@ -22,6 +23,8 @@ app.include_router(booking_router, prefix="/api", tags=["Booking"])
 app.include_router(order_router, prefix="/api", tags=["Order"])
 
 app.add_exception_handler(WebBaseException, general_exception_handler)
+app.add_exception_handler(Exception, internal_server_error_handler)
+
 
 app.mount('/static',StaticFiles(directory='static'),name='static')
 

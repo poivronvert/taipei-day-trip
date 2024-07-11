@@ -5,6 +5,7 @@ from sqlalchemy import Column, TEXT
 __all__ = [
     "AttractionBase",
     "Image",
+    "UserBase"
 ]
 
 class AttractionBase(SQLModel, table=True):
@@ -30,6 +31,15 @@ class Image(SQLModel, table=True):
     
     attraction_id: Optional[int] = Field(default=None, foreign_key="attraction.id")
     attraction: AttractionBase = Relationship(back_populates="images")
+
+class UserBase(SQLModel, table=True):
+    __tablename__ = 'users'
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str
+    email: str = Field(index=True)
+    password: str
+
 
 
 

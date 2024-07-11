@@ -768,6 +768,7 @@ main {
   background-color: #ffffff;
   width: 20px;
   height: 20px;
+  cursor: pointer;
 }
 .profile input[type=radio]:checked {
   background-color: #448899;
@@ -832,6 +833,95 @@ main {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+}
+.profile-btn:hover, .profile-btn.active {
+  opacity: 0.5;
+}
+
+.bar-decoration {
+  width: 340px;
+  height: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background: linear-gradient(100deg, #66aabb 10%, #337788 90%);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  top: 80px;
+  transform: translateX(-50%);
+  width: 340px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 60px rgb(170, 170, 170);
+}
+.modal input {
+  width: 278px;
+  height: 5px;
+  border-radius: 5px;
+  color: #757575;
+  border: 1px solid #CCCCCC;
+  background-color: #FFFFFF;
+  padding: 15px;
+  margin: 5px 0;
+}
+.modal button {
+  background-color: #448899;
+  border-radius: 5px;
+  padding: 10px 20px;
+  height: 47px;
+  width: 310px;
+  color: #FFFFFF;
+  text-align: center;
+  margin: 5px 0;
+  font-size: 19px;
+  line-height: 16px;
+  cursor: pointer;
+}
+.modal button:hover, .modal button.active {
+  opacity: 0.5;
+}
+.modal a {
+  text-decoration: none;
+  color: #666666;
+  font-size: 16px;
+  line-height: 13.3px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  left: 300px;
+  text-align: center;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  z-index: 500;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+body.modal-active #content {
+  pointer-events: none;
+}
+
+#msgSignup, #msgSignin {
+  text-align: center;
+  color: red;
+  display: none;
+  height: 22px;
+  margin: 5px 0;
 }
 
 .d-flex {

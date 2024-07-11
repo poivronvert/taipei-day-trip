@@ -1,25 +1,24 @@
-from fastapi import HTTPException, Request, status, Response
+from fastapi import Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from urllib.parse import quote
+from typing import Optional
 
-
+# 錯誤響應模型
 class WebBaseErrorSchema(BaseModel):
-    error: bool = True
-    message: str = "內部錯誤"
+    error: bool
+    message: Optional[str] = None
 
 class Error(WebBaseErrorSchema):
     pass
 
+# 異常類
 class WebBaseException(Exception):
     def __init__(
         self,
+        error: bool,
+        message: str,
         status_code: int = 500,
-        error: bool = True,
-        message: str = "內部錯誤",
-        headers: dict[str, str] | None = {"description": quote("伺服器內部錯誤"), },
-        *args,
-    ) -> None:
+        headers: dict = None):
         self.status_code = status_code
         self.error = error
         self.message = message
@@ -40,9 +39,16 @@ class AttractionInternalError(WebBaseException):
 class AttractionInternalErrorSchema(WebBaseErrorSchema):
     pass
 
-
-def general_exception_handler(request: Request, exc: WebBaseException):
+# 符合if捕獲的異常處理器
+async def general_exception_handler(request: Request, exc: WebBaseException):
     content = WebBaseErrorSchema(error=exc.error, message=exc.message)
     return JSONResponse(
         status_code=exc.status_code, headers=exc.headers, content=content.model_dump()
+    )
+
+# 其他所有的異常處理器
+async def internal_server_error_handler(request:Request, exc:Exception):
+    return JSONResponse(
+        status_code=500,
+        content=WebBaseErrorSchema(error=True, message="伺服器內部錯誤").model_dump()
     )
