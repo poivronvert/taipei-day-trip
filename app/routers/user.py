@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends,HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 from sqlmodel import Session, select
 import pendulum
+import logging
 
 from schema import *
 from database import engine
@@ -12,14 +13,12 @@ from config import settings
 
 
 SECRET = settings.secret_key
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-
-user_router = APIRouter()
+user_router = APIRouter(prefix="/user")
 
 
 @user_router.post(
-    "/user",
+    "/signup",
     summary="註冊一個新的會員",
     responses={
         200: {
@@ -58,7 +57,7 @@ user_router = APIRouter()
 )
 async def create_user(user: UserSignUpInput):
     with Session(engine) as session:
-        statement = select(UserBase).where(UserBase.email == user.email)
+        statement = select(User).where(User.email == user.email)
         existing_user = session.exec(statement).first()
         if existing_user:
             raise WebBaseException(
@@ -67,19 +66,23 @@ async def create_user(user: UserSignUpInput):
                 message="註冊失敗，重複的 Email 或其他原因",
             )
         try:
-            new_user = UserBase(
-                email=user.email, name=user.name, password=user.password
+            new_user = User(
+                email=user.email, name=user.name, password=user.password, created_at=pendulum.now(), updated_at=pendulum.now()
             )
             session.add(new_user)
             session.commit()
 
             return Success(ok=True)
         except Exception as e:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error")
+            logging.error(f"Error while creating user: {e}", exc_info=True)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Internal server error",
+            )
 
 
 @user_router.get(
-    "/user/auth",
+    "/auth",
     summary="取得當前的會員資訊",
     response_model=UserResponse,
     responses={
@@ -88,23 +91,29 @@ async def create_user(user: UserSignUpInput):
         },
     },
 )
-async def get_user(token: str = Depends(oauth2_scheme)):
+async def get_user(request: Request):
+    if "Authorization" in request.headers:
+        token = request.headers["Authorization"].split("Bearer ")[1]
     try:
-        decoded_info = jwt.decode(token, SECRET, algorithms=["HS256"])
-        user = User(
-            id=decoded_info["id"], name=decoded_info["name"], email=decoded_info["email"]
-        )
+        payload = jwt.decode(token, SECRET, algorithms=["HS256"])
+
+        user = User(id=payload["id"], name=payload["name"], email=payload["email"])
         response = UserResponse(data=user)
-    except jwt.JWTError:
-            response = UserResponse(data=None)
+
+    except jwt.exceptions.InvalidTokenError:
+        response = UserResponse(data=None)
+
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error")
-    
-    return response 
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error",
+        )
+
+    return response
 
 
 @user_router.put(
-    "/user/auth",
+    "/auth",
     summary="登入會員帳戶",
     response_model=TokenResponse,
     responses={
@@ -136,9 +145,8 @@ async def get_user(token: str = Depends(oauth2_scheme)):
 )
 async def signin_user(user: UserSingIn):
     with Session(engine) as session:
-        statement = select(UserBase).where(UserBase.email == user.email)
+        statement = select(User).where(User.email == user.email)
         existing_user = session.exec(statement).first()
-
 
         if existing_user is None or existing_user.password != user.password:
             raise WebBaseException(
@@ -146,12 +154,12 @@ async def signin_user(user: UserSingIn):
                 status_code=400,
                 message="登入失敗，帳號或密碼錯誤或其他原因",
             )
-        
+
         try:
             user_data = {
-            "id": str(existing_user.id),
-            "name": existing_user.name,
-            "email": existing_user.email,
+                "id": str(existing_user.id),
+                "name": existing_user.name,
+                "email": existing_user.email,
             }
             encoded_jwt = jwt.encode(
                 {
@@ -164,8 +172,7 @@ async def signin_user(user: UserSingIn):
                 algorithm="HS256",
             )
 
-            response = TokenResponse(token=encoded_jwt)
-            return response
+            return TokenResponse(token=encoded_jwt)
         except Exception as e:
             print(f"Error while encoding JWT: {e}")
             raise WebBaseException(

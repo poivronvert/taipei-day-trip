@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from sqlmodel import Session, select, col, or_
 from sqlalchemy.orm import joinedload
 from sqlalchemy import func
-from models import AttractionBase, Image
+from models import Attraction, Image
 import schema
 from database import engine
 from exceptions import *
@@ -18,7 +18,7 @@ attraction_router = APIRouter()
     description="取得不同分頁的旅遊景點列表資料，也可以根據標題關鍵字、或捷運站名稱篩選",
     responses={
         500: {
-            "description": "可能沒找到資料喔",
+            "description": "伺服器內部錯誤",
             "content": {"application/json": {"schema": Error.model_json_schema()}},
         },
     },
@@ -32,20 +32,20 @@ async def get_attraction(
 ) -> schema.AttractionOut | AttractionInternalErrorSchema | Error:
     page_size: int = 12
     with Session(engine) as session:
-        query = select(AttractionBase).options(
-            joinedload(AttractionBase.images).load_only(Image.url)
+        query = select(Attraction).options(
+            joinedload(Attraction.images).load_only(Image.url)
         )
         if keyword:
             query = query.where(
                 or_(
-                    AttractionBase.mrt == keyword, AttractionBase.name.contains(keyword)
+                    Attraction.mrt == keyword, Attraction.name.contains(keyword)
                 )
             )
         cnt_stmt = select(func.count()).select_from(query.subquery())
         cnt = session.exec(cnt_stmt).first()
         attractions = session.exec(query.offset(page * page_size).limit(page_size)).unique().all()
         if not attractions:
-            raise AttractionInternalError(message="沒有資料")
+            raise AttractionInternalError(status_code=500, error=True,message="伺服器內部錯誤")
 
         res = []
         for a in attractions:
@@ -75,10 +75,10 @@ def get_attraction_id(
 ) -> schema.AttractionIdOut:
     with Session(engine) as session:
         attraction = session.exec(
-            select(AttractionBase).filter_by(id=attractionId)
+            select(Attraction).filter_by(id=attractionId)
         ).first()
         if not attraction:
-            raise AttractionInternalError(status_code=400, message="沒有資料")
+            raise AttractionInternalError(status_code=400, error=True,message="沒有資料")
         data = attraction.model_dump()
         data["images"] = [i.url for i in attraction.images]
         return {"data": data}

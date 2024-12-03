@@ -1,12 +1,12 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 # 錯誤響應模型
 class WebBaseErrorSchema(BaseModel):
     error: bool
-    message: Optional[str] = None
+    message: str = Field(...,example="請按照情境提供對應的錯誤訊息")
 
 class Error(WebBaseErrorSchema):
     pass

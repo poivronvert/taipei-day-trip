@@ -1,11 +1,7 @@
-from typing import List
-from typing import List, Optional, Any
-from fastapi import APIRouter, Query, Path, Request, Response, HTTPException, status
+from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from sqlmodel import Session, select, col, or_, func
-from sqlalchemy.orm import joinedload
-from models import AttractionBase, Image
-import schema
+from sqlmodel import Session, select,func
+from models import Attraction
 from database import engine
 from exceptions import *
 
@@ -29,11 +25,11 @@ def get_mrt():
     try:
         stmt = (
             select(
-                AttractionBase.mrt,
-                func.count(AttractionBase.name).label("attraction_count"),
+                Attraction.mrt,
+                func.count(Attraction.name).label("attraction_count"),
             )
-            .group_by(AttractionBase.mrt)
-            .order_by(func.count(AttractionBase.name).desc())
+            .group_by(Attraction.mrt)
+            .order_by(func.count(Attraction.name).desc())
         )
         with Session(engine) as sess:
             mrt_list = sess.exec(stmt).all()
