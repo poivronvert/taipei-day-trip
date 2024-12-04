@@ -5,3 +5,5 @@ fastapi==0.111.0
 pydantic==2.7.1
 pydantic-settings==2.2.1
 mysql-connector-python
+pyjwt
+pendulum
