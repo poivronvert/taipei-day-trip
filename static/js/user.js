@@ -1,23 +1,23 @@
-async function verifyUserToken() {
+async function verifyUserToken(url) {
     const token = localStorage.getItem('authToken');
-    if (token) {
-        const url = '/api/user/auth';
-
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            const data = await response.json();
-            if (data.data) {
-                return true;
+    if (!token){
+        console.log('使用者未登入');
+        return false;
+    }
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
             }
-        } catch (error) {
-            console.error('Error verifying token:', error);
-            return false;
+        });
+        const data = await response.json();
+        if (data.data) {
+            return true;
         }
+    } catch (error) {
+        console.error('Error verifying token:', error);
+        return false;
     }
 }
 
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const navbarSignin = document.getElementById('navbarSignin');
     const navbarSignout = document.getElementById('navbarSignout');
 
-    const isValidToken = await verifyUserToken();
+    const isValidToken = await verifyUserToken('/api/user/auth');
 
     if (isValidToken) {
         navbarSignin.style.display = 'none';
@@ -89,7 +89,7 @@ document.getElementById("signupForm").addEventListener('submit', async (event) =
     
 
     try {
-        const url = '/api/user';
+        const url = '/api/user/signup';
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -182,7 +182,7 @@ document.getElementById('navbarSignout').addEventListener('click', () => {
 });
 
 document.getElementById('navbarBooking').addEventListener('click', async () => {
-    const isValidToken = await verifyUserToken();
+    const isValidToken = await verifyUserToken('/api/user/auth');
 
     if (!isValidToken) {
         displaySigninModal();

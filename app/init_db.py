@@ -2,9 +2,9 @@ from sqlmodel import create_engine, Session, SQLModel, text
 from config import settings
 
 
-SYS_DATABASE_URL = settings.sys_database_url
+DATABASE_URL = settings.database_url
 
-engine = create_engine(SYS_DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL, echo=True)
 
 with Session(engine) as session:
     statement=text("CREATE DATABASE IF NOT EXISTS taipeitrip")
