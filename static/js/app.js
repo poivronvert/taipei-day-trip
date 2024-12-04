@@ -43,8 +43,8 @@ function loadData() {
             isLoading = false;
 
             if (res.error) {
-                alert(res.message);
-                return;
+                let container = document.querySelector('.grid-attraction');
+                return container.innerHTML = "找不到資料！！";
             }
             
             appendAttractions(res.data);

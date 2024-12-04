@@ -1,6 +1,6 @@
 import sys
-from fastapi import Depends, FastAPI, Request, HTTPException
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi import Depends, FastAPI, Request
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 import uvicorn
@@ -11,10 +11,15 @@ from routers.mrts import mrts_router
 from routers.booking import booking_router
 from routers.order import order_router
 from exceptions import *
+from secure import JWTMiddleware
 
 
 
 app=FastAPI()
+
+app.mount('/static',StaticFiles(directory='static'),name='static')
+
+app.add_middleware(JWTMiddleware)
 
 app.include_router(user_router, prefix="/api", tags=["User"])
 app.include_router(attraction_router, prefix="/api", tags=["Attraction"])
@@ -26,7 +31,6 @@ app.add_exception_handler(WebBaseException, general_exception_handler)
 app.add_exception_handler(Exception, internal_server_error_handler)
 
 
-app.mount('/static',StaticFiles(directory='static'),name='static')
 
 # Static Pages (Never Modify Code in this Block)
 @app.get("/", include_in_schema=False)
@@ -42,9 +46,8 @@ async def booking(request: Request):
 async def thankyou(request: Request):
 	return FileResponse("./static/thankyou.html", media_type="text/html")
 
-
 if __name__== "__main__":
 	try:
-		uvicorn.run("main:app", reload=True, host="127.0.0.1")
+		uvicorn.run("main:app", reload=True, host="0.0.0.0")
 	except Exception as e:
 		sys.exit(1)

@@ -21,7 +21,7 @@
           <h2 class="headline noto-sans-bold">台北一日遊</h2>
         </a>
         <ul class="navbar-list">
-          <li><a href="#" class="navlist-item" id="navbarBooking">預定行程</a></li>
+          <li><a href="/booking" class="navlist-item" id="navbarBooking">預定行程</a></li>
           <li><a href="#" class="navlist-item" id="navbarSignin">登入/註冊</a></li>
           <li><a href="#" class="navlist-item" id="navbarSignout" style="display: none;">登出系統</a></li>
         </ul>
@@ -46,7 +46,7 @@
               <div class="name"></div>
               <div class="category-mrt"></div>
               <div class="booking-form">
-                <form>
+                <form id="bookingForm">
                   <p class="noto-sans-bold" style="margin-bottom: 15px; height: 22px;">訂購導覽行程</p>
                   <p style="margin-bottom: 15px; line-height: 23.17px;">以此景點為中心的一日行程，帶您探索城市角落故事</p>
                   <div class="d-flex custom-input-date">
@@ -73,8 +73,9 @@
                     <p>導覽費用：</p>
                     <p id="amount"></p>
                   </div>
+
+                  <button type="button" class="profile-btn noto-sans-regular" id="profileBooking">開始預約行程</button>
                 </form>
-                <button type="button" class="profile-btn noto-sans-regular" id="profileBooking">開始預約行程</button>
               </div>
             </div>
           </div>
@@ -149,16 +150,6 @@
 
   <script src="/static/js/attraction.js"></script>
   <script src="/static/js/user.js"></script>
-  <script>
-    const profileBooking = document.querySelector('#profileBooking')
-
-    profileBooking.addEventListener('click', async () => {
-    const isValidToken = await verifyUserToken();
-    if (!isValidToken) {
-      displaySigninModal();
-    }
-    })
-  </script>
 </body>
 
 
